@@ -1,0 +1,25 @@
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# IDE / Editor Directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs & Temporary Files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Personal Instagram Export Archives (Keep user data private)
+*.zip

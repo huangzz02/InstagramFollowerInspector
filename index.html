@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IG 追蹤與粉絲分析工具 | IG Follower Inspector</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/upload.css">
+  <link rel="stylesheet" href="css/analysis.css">
+  <link rel="stylesheet" href="css/triage.css">
+  <link rel="stylesheet" href="css/modals.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </div>
+      <div>
+        <h1>IG 粉絲與追蹤分析工具</h1>
+      </div>
+    </div>
+    <div class="version-tag">v1.0.0</div>
+  </header>
+
+  <div class="app-layout">
+
+    <!-- Left Vertical Navigation -->
+    <nav class="left-nav" id="left-nav">
+      <div class="left-nav-menu">
+        <button class="left-nav-item active" id="nav-upload" data-page="upload">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <span>匯入資料</span>
+        </button>
+
+        <div class="left-nav-divider"></div>
+
+        <button class="left-nav-item" id="nav-analysis" data-page="analysis">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>名單分析</span>
+        </button>
+
+        <div class="left-nav-divider"></div>
+
+        <div class="left-nav-group-title">進一步整理</div>
+
+        <button class="left-nav-item" id="nav-fans-not-followed" data-page="fans-not-followed">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          <span>你尚未追蹤</span>
+        </button>
+        <button class="left-nav-item" id="nav-mutuals" data-page="mutuals">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>互追中</span>
+        </button>
+        <button class="left-nav-item" id="nav-not-following-back" data-page="not-following-back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="16" y1="11" x2="22" y2="11"/></svg>
+          <span>對方未回追</span>
+        </button>
+      </div>
+
+      <div class="left-nav-bottom">
+        <button type="button" class="btn-sidebar-toggle" id="btn-sidebar-toggle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <span>收折選單</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="main-area">
+      <div class="main-scroll">
+
+        <!-- Page: Upload -->
+        <div class="page-panel active" id="page-upload">
+          <!-- Quick Tutorial Banner -->
+          <div class="guide-banner">
+            <div class="guide-info">
+              <h3>如何取得 Instagram 匯出資料？</h3>
+              <p>本專案採用 Instagram 官方提供的資料匯出功能，並在本地進行分析，完全避免如第三方分析軟體可能帶來的隱私風險或帳號封禁問題。</p>
+            </div>
+            <button class="btn-guide" id="btn-open-guide">查看下載教學</button>
+          </div>
+
+          <!-- Drop Zone -->
+          <div class="drop-zone" id="drop-zone">
+            <input type="file" id="file-input" accept=".zip">
+            <svg class="drop-zone-border" aria-hidden="true"><rect/></svg>
+            <div class="drop-zone-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <h2>將 IG 匯出的 .zip 檔上傳或拖曳到這裡</h2>
+            <p>匯出時選擇 HTML 或 JSON 檔案皆可分析</p>
+            <button class="btn-select" id="btn-browse">選擇檔案</button>
+            <div id="loading-state" style="display: none; margin-top: 1.5rem;">
+              <div class="spinner"></div>
+              <p id="loading-text" style="color: #ec4899; font-weight: 600; font-size: 0.9rem;">正在解析名單中...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page: Analysis -->
+        <div class="page-panel" id="page-analysis">
+
+          <!-- Empty state before data loaded -->
+          <div id="analysis-empty-state" class="empty-analysis-text">
+            <p>尚未匯入任何資料</p>
+            <p class="sub">請先至左側「匯入資料」上傳 IG 匯出的 .zip 檔案</p>
+          </div>
+
+          <!-- Results (shown after data parsed) -->
+          <div id="results-section" style="display: none;">
+
+            <!-- Top Section: 5 Cards (left) + Perspective Toolbar & Donut Chart (right) -->
+            <div class="analysis-top-row">
+
+              <!-- Left: 5 Stat Cards (Row 1: 總粉絲, 追蹤中; Row 2: 你尚未追蹤, 互追中, 對方未回追) -->
+              <div class="stats-container mode-all" id="stats-container">
+                <!-- Row 1: 總粉絲, 追蹤中 -->
+                <div class="stats-row-primary">
+                  <div class="stat-card" data-tab="followers" style="--card-accent: #a855f7;">
+                    <div class="stat-card-top">
+                      <div class="stat-title"><span class="stat-badge"></span>總粉絲</div>
+                    </div>
+                    <div class="stat-number" id="count-followers">0</div>
+                    <div class="stat-card-bottom">
+                      <div class="stat-desc">追蹤你的總人數</div>
+                    </div>
+                  </div>
+
+                  <div class="stat-card" data-tab="following" style="--card-accent: #38bdf8;">
+                    <div class="stat-card-top">
+                      <div class="stat-title"><span class="stat-badge"></span>追蹤中</div>
+                      <button type="button" class="btn-warn-notice" id="btn-warn-following">數值錯誤說明</button>
+                    </div>
+                    <div class="stat-number" id="count-following">0</div>
+                    <div class="stat-card-bottom">
+                      <div class="stat-desc">你正在追蹤的總人數</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Row 2: 互追中, 對方未回追, 你尚未追蹤 -->
+                <div class="stats-row-secondary">
+                  <div class="stat-card" data-tab="fans-not-followed" style="--card-accent: #f59e0b;">
+                    <div class="stat-card-top">
+                      <div class="stat-title"><span class="stat-badge"></span>你尚未追蹤</div>
+                    </div>
+                    <div class="stat-number" id="count-fans-only">0</div>
+                    <div class="stat-card-bottom">
+                      <div class="stat-desc">對方追蹤你但你未回追</div>
+                    </div>
+                  </div>
+
+                  <div class="stat-card" data-tab="mutuals" style="--card-accent: #10b981;">
+                    <div class="stat-card-top">
+                      <div class="stat-title"><span class="stat-badge"></span>互追中</div>
+                    </div>
+                    <div class="stat-number" id="count-mutuals">0</div>
+                    <div class="stat-card-bottom">
+                      <div class="stat-desc">雙方互為好友</div>
+                    </div>
+                  </div>
+
+                  <div class="stat-card" data-tab="not-following-back" style="--card-accent: #f43f5e;">
+                    <div class="stat-card-top">
+                      <div class="stat-title"><span class="stat-badge"></span>對方未回追</div>
+                      <button type="button" class="btn-warn-notice" id="btn-warn-not-back">數值錯誤說明</button>
+                    </div>
+                    <div class="stat-number" id="count-not-back">0</div>
+                    <div class="stat-card-bottom">
+                      <div class="stat-desc">你追蹤對方但對方未回追你</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Perspective Mode Switcher Toolbar + Donut Chart Card -->
+              <div class="analysis-right-col mode-all" id="analysis-right-col">
+                <!-- Perspective Mode Switcher Toolbar -->
+                <div class="perspective-bar">
+                  <div class="perspective-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span>分析視角</span>
+                  </div>
+                  <div class="perspective-tabs mode-all" id="perspective-tabs">
+                    <div class="perspective-slider" id="perspective-slider"></div>
+                    <button type="button" class="perspective-tab active" data-mode="all">
+                      <span>全部資訊</span>
+                    </button>
+                    <button type="button" class="perspective-tab" data-mode="trio">
+                      <span>三區模式</span>
+                    </button>
+                    <button type="button" class="perspective-tab" data-mode="followers">
+                      <span>粉絲模式</span>
+                    </button>
+                    <button type="button" class="perspective-tab" data-mode="following">
+                      <span>追蹤模式</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Donut Chart Card -->
+                <div class="chart-card" id="chart-card">
+                  <div class="donut-chart-container">
+                    <svg class="donut-svg" viewBox="0 0 140 140" id="donut-svg">
+                      <circle class="donut-track" cx="70" cy="70" r="50" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="15" />
+                      <circle id="slice-mutuals" class="donut-slice" cx="70" cy="70" r="50" fill="none" stroke="#10b981" stroke-width="15" stroke-dasharray="0 314.16" stroke-dashoffset="0" transform="rotate(-90 70 70)" />
+                      <circle id="slice-fans-only" class="donut-slice" cx="70" cy="70" r="50" fill="none" stroke="#f59e0b" stroke-width="15" stroke-dasharray="0 314.16" stroke-dashoffset="0" transform="rotate(-90 70 70)" />
+                      <circle id="slice-not-back" class="donut-slice" cx="70" cy="70" r="50" fill="none" stroke="#f43f5e" stroke-width="15" stroke-dasharray="0 314.16" stroke-dashoffset="0" transform="rotate(-90 70 70)" />
+                    </svg>
+                    <div class="donut-center-info">
+                      <div class="donut-center-num" id="donut-center-total">0</div>
+                      <div class="donut-center-label" id="donut-center-label">關聯總數</div>
+                    </div>
+                  </div>
+                  <div class="chart-legend" id="chart-legend">
+                    <div class="legend-item legend-collapsed" id="legend-item-mutuals">
+                      <div class="legend-left">
+                        <span class="legend-dot" style="background: #10b981;"></span>
+                        <span class="legend-name">互追中</span>
+                      </div>
+                      <div class="legend-right">
+                        <span class="legend-count" id="legend-count-mutuals">0</span>
+                        <span class="legend-pct" id="legend-pct-mutuals">0%</span>
+                      </div>
+                    </div>
+                    <div class="legend-item legend-collapsed" id="legend-item-fans-only">
+                      <div class="legend-left">
+                        <span class="legend-dot" style="background: #f59e0b;"></span>
+                        <span class="legend-name">你尚未追蹤</span>
+                      </div>
+                      <div class="legend-right">
+                        <span class="legend-count" id="legend-count-fans-only">0</span>
+                        <span class="legend-pct" id="legend-pct-fans-only">0%</span>
+                      </div>
+                    </div>
+                    <div class="legend-item legend-collapsed" id="legend-item-not-back">
+                      <div class="legend-left">
+                        <span class="legend-dot" style="background: #f43f5e;"></span>
+                        <span class="legend-name">對方未回追</span>
+                      </div>
+                      <div class="legend-right">
+                        <span class="legend-count" id="legend-count-not-back">0</span>
+                        <span class="legend-pct" id="legend-pct-not-back">0%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Bottom Area: Control Bar + User List Card -->
+            <div class="analysis-bottom-area">
+
+              <!-- Control Bar -->
+              <div class="control-bar">
+                <!-- Search -->
+                <div class="control-search">
+                  <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" class="search-input" id="search-input" placeholder="搜尋帳號名稱或日期...">
+                  <button type="button" class="search-clear-btn" id="search-clear-btn" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+
+                <div class="control-actions">
+                  <!-- Sort Dropdown -->
+                  <div class="custom-dropdown" id="custom-sort-dropdown">
+                    <button type="button" class="dropdown-trigger" id="sort-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 12h12M9 18h6"/></svg>
+                      <span id="sort-dropdown-label">由近到遠（最新在先）</span>
+                      <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="dropdown-menu" id="sort-dropdown-menu">
+                      <div class="dropdown-item active" data-value="recent">
+                        <span>由近到遠（最新在先）</span>
+                        <svg class="check-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <div class="dropdown-item" data-value="oldest">
+                        <span>由遠到近（最舊在先）</span>
+                        <svg class="check-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <div class="dropdown-item" data-value="name-asc">
+                        <span>帳號名稱 (A - Z)</span>
+                        <svg class="check-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <div class="dropdown-item" data-value="name-desc">
+                        <span>帳號名稱 (Z - A)</span>
+                        <svg class="check-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- View Mode Toggle with sliding indicator -->
+                  <div class="view-mode-toggle" id="view-mode-toggle">
+                    <div class="view-mode-slider"></div>
+                    <button class="btn-view-mode active" id="btn-view-single">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                      <span>單欄</span>
+                    </button>
+                    <button class="btn-view-mode" id="btn-view-multi">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                      <span>多欄</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- User List Card -->
+              <div class="user-list-card">
+                <div class="user-grid view-single" id="user-grid"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Page: Fans Not Followed (你尚未追蹤) -->
+        <div class="page-panel" id="page-fans-not-followed">
+          <div id="triage-empty-fans-not-followed" class="empty-analysis-text">
+            <p>尚未匯入任何資料</p>
+            <p class="sub">請先至左側「匯入資料」上傳 IG 匯出的 .zip 檔案</p>
+          </div>
+          <div class="triage-container" id="triage-container-fans-not-followed" style="display: none;">
+            <!-- Top Row: Compact Mini Card on Left + Unified Controls on Right -->
+            <div class="triage-top-row">
+              <div class="triage-mini-card" style="--card-accent: #f59e0b;">
+                <div class="triage-mini-header">
+                  <div class="stat-title"><span class="stat-badge"></span>你尚未追蹤</div>
+                  <div class="triage-mini-count">
+                    <span class="stat-number" id="triage-count-fans-not-followed">0</span>
+                    <span class="triage-unit">人</span>
+                  </div>
+                </div>
+                <div class="triage-mini-desc">對方追蹤你但你未回追</div>
+              </div>
+
+              <div class="triage-top-controls">
+                <div class="control-search">
+                  <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" class="search-input triage-search-input" data-triage="fans-not-followed" placeholder="搜尋帳號名稱或日期...">
+                  <button type="button" class="search-clear-btn triage-search-clear" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+
+                <div class="custom-dropdown triage-sort-dropdown" data-triage="fans-not-followed">
+                  <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 12h12M9 18h6"/></svg>
+                    <span>由近到遠（最新在先）</span>
+                    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                  </button>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-item active" data-value="recent"><span>由近到遠（最新在先）</span></div>
+                    <div class="dropdown-item" data-value="oldest"><span>由遠到近（最舊在先）</span></div>
+                    <div class="dropdown-item" data-value="name-asc"><span>帳號名稱 (A - Z)</span></div>
+                    <div class="dropdown-item" data-value="name-desc"><span>帳號名稱 (Z - A)</span></div>
+                  </div>
+                </div>
+
+                <div class="view-mode-toggle triage-view-toggle" data-triage="fans-not-followed">
+                  <div class="view-mode-slider"></div>
+                  <button class="btn-view-mode active" data-view="single">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    <span>單欄</span>
+                  </button>
+                  <button class="btn-view-mode" data-view="multi">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>多欄</span>
+                  </button>
+                </div>
+
+                <button type="button" class="btn-triage-copy" data-triage="fans-not-followed">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>複製名單</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Category Filter Bar Wrap -->
+            <div class="triage-filter-bar-wrap">
+              <div class="custom-dropdown triage-mode-dropdown" data-triage="fans-not-followed">
+                <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="mode-dropdown-label">決策導向</span>
+                  <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="dropdown-menu">
+                  <div class="dropdown-item active" data-mode="decision"><span>決策導向</span></div>
+                  <div class="dropdown-item" data-mode="relation"><span>關係導向</span></div>
+                  <div class="dropdown-item" data-mode="custom"><span>自訂標籤</span></div>
+                </div>
+              </div>
+              <div class="triage-filter-bar" id="triage-filter-bar-fans-not-followed"></div>
+            </div>
+
+            <!-- Batch Action Bar: Floating bottom pill dock (Zero layout shift) -->
+            <div class="triage-batch-bar" id="triage-batch-bar-fans-not-followed">
+              <div class="triage-batch-left">
+                <span class="triage-batch-badge"><span class="triage-batch-count">0</span></span>
+                <span class="triage-batch-label">個帳號已選取</span>
+              </div>
+              <div class="triage-batch-divider"></div>
+              <div class="triage-batch-actions">
+                <span class="triage-batch-hint">一鍵套用標籤：</span>
+                <div class="triage-batch-tag-buttons" id="triage-batch-tags-fans-not-followed"></div>
+                <button type="button" class="btn-batch-action btn-batch-clear" data-triage="fans-not-followed">清除標籤</button>
+                <button type="button" class="btn-batch-action btn-batch-cancel" data-triage="fans-not-followed">取消選取</button>
+              </div>
+            </div>
+
+            <!-- User List Card -->
+            <div class="user-list-card">
+              <div class="user-grid view-single triage-user-grid" id="triage-grid-fans-not-followed"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page: Mutuals (互追中) -->
+        <div class="page-panel" id="page-mutuals">
+          <div id="triage-empty-mutuals" class="empty-analysis-text">
+            <p>尚未匯入任何資料</p>
+            <p class="sub">請先至左側「匯入資料」上傳 IG 匯出的 .zip 檔案</p>
+          </div>
+          <div class="triage-container" id="triage-container-mutuals" style="display: none;">
+            <!-- Top Row: Compact Mini Card on Left + Unified Controls on Right -->
+            <div class="triage-top-row">
+              <div class="triage-mini-card" style="--card-accent: #10b981;">
+                <div class="triage-mini-header">
+                  <div class="stat-title"><span class="stat-badge"></span>互追中</div>
+                  <div class="triage-mini-count">
+                    <span class="stat-number" id="triage-count-mutuals">0</span>
+                    <span class="triage-unit">人</span>
+                  </div>
+                </div>
+                <div class="triage-mini-desc">雙方互為好友</div>
+              </div>
+
+              <div class="triage-top-controls">
+                <div class="control-search">
+                  <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" class="search-input triage-search-input" data-triage="mutuals" placeholder="搜尋帳號名稱或日期...">
+                  <button type="button" class="search-clear-btn triage-search-clear" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+
+                <div class="custom-dropdown triage-sort-dropdown" data-triage="mutuals">
+                  <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 12h12M9 18h6"/></svg>
+                    <span>由近到遠（最新在先）</span>
+                    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                  </button>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-item active" data-value="recent"><span>由近到遠（最新在先）</span></div>
+                    <div class="dropdown-item" data-value="oldest"><span>由遠到近（最舊在先）</span></div>
+                    <div class="dropdown-item" data-value="name-asc"><span>帳號名稱 (A - Z)</span></div>
+                    <div class="dropdown-item" data-value="name-desc"><span>帳號名稱 (Z - A)</span></div>
+                  </div>
+                </div>
+
+                <div class="view-mode-toggle triage-view-toggle" data-triage="mutuals">
+                  <div class="view-mode-slider"></div>
+                  <button class="btn-view-mode active" data-view="single">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    <span>單欄</span>
+                  </button>
+                  <button class="btn-view-mode" data-view="multi">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>多欄</span>
+                  </button>
+                </div>
+
+                <button type="button" class="btn-triage-copy" data-triage="mutuals">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>複製名單</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Category Filter Bar Wrap -->
+            <div class="triage-filter-bar-wrap">
+              <div class="custom-dropdown triage-mode-dropdown" data-triage="mutuals">
+                <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="mode-dropdown-label">決策導向</span>
+                  <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="dropdown-menu">
+                  <div class="dropdown-item active" data-mode="decision"><span>決策導向</span></div>
+                  <div class="dropdown-item" data-mode="relation"><span>關係導向</span></div>
+                  <div class="dropdown-item" data-mode="custom"><span>自訂標籤</span></div>
+                </div>
+              </div>
+              <div class="triage-filter-bar" id="triage-filter-bar-mutuals"></div>
+            </div>
+
+            <!-- Batch Action Bar: Floating bottom pill dock (Zero layout shift) -->
+            <div class="triage-batch-bar" id="triage-batch-bar-mutuals">
+              <div class="triage-batch-left">
+                <span class="triage-batch-badge"><span class="triage-batch-count">0</span></span>
+                <span class="triage-batch-label">個帳號已選取</span>
+              </div>
+              <div class="triage-batch-divider"></div>
+              <div class="triage-batch-actions">
+                <span class="triage-batch-hint">一鍵套用標籤：</span>
+                <div class="triage-batch-tag-buttons" id="triage-batch-tags-mutuals"></div>
+                <button type="button" class="btn-batch-action btn-batch-clear" data-triage="mutuals">清除標籤</button>
+                <button type="button" class="btn-batch-action btn-batch-cancel" data-triage="mutuals">取消選取</button>
+              </div>
+            </div>
+
+            <!-- User List Card -->
+            <div class="user-list-card">
+              <div class="user-grid view-single triage-user-grid" id="triage-grid-mutuals"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page: Not Following Back (對方未回追) -->
+        <div class="page-panel" id="page-not-following-back">
+          <div id="triage-empty-not-following-back" class="empty-analysis-text">
+            <p>尚未匯入任何資料</p>
+            <p class="sub">請先至左側「匯入資料」上傳 IG 匯出的 .zip 檔案</p>
+          </div>
+          <div class="triage-container" id="triage-container-not-following-back" style="display: none;">
+            <!-- Top Row: Compact Mini Card on Left + Unified Controls on Right -->
+            <div class="triage-top-row">
+              <div class="triage-mini-card" style="--card-accent: #f43f5e;">
+                <div class="triage-mini-header">
+                  <div class="stat-title"><span class="stat-badge"></span>對方未回追</div>
+                  <div class="triage-mini-count">
+                    <span class="stat-number" id="triage-count-not-following-back">0</span>
+                    <span class="triage-unit">人</span>
+                  </div>
+                </div>
+                <div class="triage-mini-desc">
+                  <span>你追蹤對方但對方未回追你</span>
+                  <button type="button" class="btn-warn-notice btn-warn-notice-triage" id="btn-warn-not-back-triage">數值錯誤說明</button>
+                </div>
+              </div>
+
+              <div class="triage-top-controls">
+                <div class="control-search">
+                  <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" class="search-input triage-search-input" data-triage="not-following-back" placeholder="搜尋帳號名稱或日期...">
+                  <button type="button" class="search-clear-btn triage-search-clear" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+
+                <div class="custom-dropdown triage-sort-dropdown" data-triage="not-following-back">
+                  <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 12h12M9 18h6"/></svg>
+                    <span>由近到遠（最新在先）</span>
+                    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                  </button>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-item active" data-value="recent"><span>由近到遠（最新在先）</span></div>
+                    <div class="dropdown-item" data-value="oldest"><span>由遠到近（最舊在先）</span></div>
+                    <div class="dropdown-item" data-value="name-asc"><span>帳號名稱 (A - Z)</span></div>
+                    <div class="dropdown-item" data-value="name-desc"><span>帳號名稱 (Z - A)</span></div>
+                  </div>
+                </div>
+
+                <div class="view-mode-toggle triage-view-toggle" data-triage="not-following-back">
+                  <div class="view-mode-slider"></div>
+                  <button class="btn-view-mode active" data-view="single">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    <span>單欄</span>
+                  </button>
+                  <button class="btn-view-mode" data-view="multi">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>多欄</span>
+                  </button>
+                </div>
+
+                <button type="button" class="btn-triage-copy" data-triage="not-following-back">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <span>複製名單</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Category Filter Bar Wrap -->
+            <div class="triage-filter-bar-wrap">
+              <div class="custom-dropdown triage-mode-dropdown" data-triage="not-following-back">
+                <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+                  <span class="mode-dropdown-label">決策導向</span>
+                  <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="dropdown-menu">
+                  <div class="dropdown-item active" data-mode="decision"><span>決策導向</span></div>
+                  <div class="dropdown-item" data-mode="relation"><span>關係導向</span></div>
+                  <div class="dropdown-item" data-mode="custom"><span>自訂標籤</span></div>
+                </div>
+              </div>
+              <div class="triage-filter-bar" id="triage-filter-bar-not-following-back"></div>
+            </div>
+
+            <!-- Batch Action Bar: Floating bottom pill dock (Zero layout shift) -->
+            <div class="triage-batch-bar" id="triage-batch-bar-not-following-back">
+              <div class="triage-batch-left">
+                <span class="triage-batch-badge"><span class="triage-batch-count">0</span></span>
+                <span class="triage-batch-label">個帳號已選取</span>
+              </div>
+              <div class="triage-batch-divider"></div>
+              <div class="triage-batch-actions">
+                <span class="triage-batch-hint">一鍵套用標籤：</span>
+                <div class="triage-batch-tag-buttons" id="triage-batch-tags-not-following-back"></div>
+                <button type="button" class="btn-batch-action btn-batch-clear" data-triage="not-following-back">清除標籤</button>
+                <button type="button" class="btn-batch-action btn-batch-cancel" data-triage="not-following-back">取消選取</button>
+              </div>
+            </div>
+
+            <!-- User List Card -->
+            <div class="user-list-card">
+              <div class="user-grid view-single triage-user-grid" id="triage-grid-not-following-back"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <footer>
+        <p>© huangzz02 ・ Instagram Follower Inspector</p>
+      </footer>
+    </div>
+
+  </div>
+
+  <!-- Tutorial Modal -->
+  <div class="modal-overlay" id="guide-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Instagram 官方資料下載步驟</h2>
+        <button class="btn-close" id="btn-close-guide">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>進入設定</h4>
+          <p>開啟 Instagram 網頁版，點選側邊欄 ①「更多（三條線）」➔ 點選 ②「設定」。</p>
+          <div class="step-img-wrap"><img src="images/step-01.png" alt="步驟 1 進入設定" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>前往帳號管理中心</h4>
+          <p>在設定頁面頂部，點選「帳號管理中心」。</p>
+          <div class="step-img-wrap"><img src="images/step-02.png" alt="步驟 2 進入帳號管理中心" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>前往匯出資訊頁面</h4>
+          <p>在左側選單點選 ①「你的資訊和權限」➔ 右側點選 ②「匯出你的資訊」。</p>
+          <div class="step-img-wrap"><img src="images/step-03.png" alt="步驟 3 前往匯出資訊頁面" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>匯出你的資訊</h4>
+          <p>在視窗中點選「建立匯出檔案」。</p>
+          <div class="step-img-wrap"><img src="images/step-04.png" alt="步驟 4 匯出你的資訊頁面" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>選擇帳號</h4>
+          <p>勾選你要匯出的 Instagram 帳號（若有多個帳號請選擇要分析的那個）。</p>
+          <div class="step-img-wrap"><img src="images/step-05.png" alt="步驟 5 選擇帳號頁面" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="step-item">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h4>選擇匯出位置</h4>
+          <p>在視窗中點選「匯出到裝置」。</p>
+          <div class="step-img-wrap"><img src="images/step-06.png" alt="步驟 6 選擇匯出位置頁面" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="step-item">
+        <div class="step-num">7</div>
+        <div class="step-body">
+          <h4>確認匯出</h4>
+          <p style="margin-top: 0.35rem;">1. <strong>自訂資訊（如附圖二）</strong>：<span class="highlight">只勾選「粉絲和追蹤對象」</span>。</p>
+          <p>2. <strong>日期範圍</strong>：<span class="highlight">務必改為「不限時間」</span>。</p>
+          <p>3. <strong>格式</strong>：HTML 或 JSON 皆可（本工具均支援）。</p>
+          <p>4. <strong>影像畫質</strong>：選擇「較低品質」縮短打包等待。</p>
+          <p style="margin-top: 0.35rem;">確認完畢後，點擊下方藍色按鈕「開始匯出」。</p>
+          <div class="step-img-wrap"><img src="images/step-07.png" alt="步驟 7 確認匯出頁面" loading="lazy"></div>
+          <div class="step-img-wrap" style="margin-top: 0.6rem;"><img src="images/step-07-2.png" alt="步驟 7-補充 自訂資訊只勾選粉絲和追蹤對象" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Step 8 -->
+      <div class="step-item">
+        <div class="step-num">8</div>
+        <div class="step-body">
+          <h4>輸入密碼確認身分</h4>
+          <p>輸入 Instagram 密碼，輸入後點選「繼續」按鈕。</p>
+          <div class="step-img-wrap"><img src="images/step-08.png" alt="步驟 8 輸入密碼頁面" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Step 9 -->
+      <div class="step-item">
+        <div class="step-num">9</div>
+        <div class="step-body">
+          <h4>等待 Meta 回信</h4>
+          <p>畫面顯示「已送出要求」即代表申請成功！Meta 伺服器會在後台打包你的資料，約幾分鐘到數十分鐘內即可收到回信。</p>
+          <div class="step-img-wrap"><img src="images/step-09.png" alt="步驟 9 已送出要求頁面" loading="lazy"></div>
+        </div>
+      </div>
+
+      <!-- Step 10 -->
+      <div class="step-item">
+        <div class="step-num">10</div>
+        <div class="step-body">
+          <h4>從信件下載 .zip 檔案</h4>
+          <p>等待幾分鐘到數十分鐘後，你的信箱會收到標題為「你要下載的 Meta 資訊已準備就緒」的官方 Email。可直接點擊信中「export your information」超連結跳轉後點擊「下載」，或手動回到「帳號管理中心 ➔ 匯出你的資訊 ➔ 可供下載的內容」點擊「下載」。</p>
+          <p style="margin-top: 0.25rem;">下載完成後，直接把該 .zip 壓縮檔上傳或拖曳進本工具，即可完成比對！</p>
+          <div class="step-img-wrap"><img src="images/step-10.png" alt="步驟 10 信件頁面" loading="lazy"></div>
+        </div>
+      </div>
+
+      <div style="text-align: right; margin-top: 1.25rem;">
+        <button class="btn-select" id="btn-close-guide-2" style="padding: 0.45rem 1.2rem; font-size: 0.85rem;">完成</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Centered Important Notice Modal (背景模糊，畫面正中間) -->
+  <div class="modal-overlay" id="notice-modal">
+    <div class="modal-content notice-modal-content">
+      <div class="modal-header">
+        <div class="notice-modal-title">
+          <svg class="help-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+            <circle cx="12" cy="17" r="1.2" fill="currentColor" stroke="none"/>
+          </svg>
+          <span>數值錯誤說明</span>
+        </div>
+        <button class="btn-close" id="btn-close-notice">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="notice-modal-body">
+        <div class="sidebar-note-item">
+          <h5>1. 為什麼顯示的人數會比手機 App 多？</h5>
+          <p>Meta 官方匯出的是資料庫底層的完整歷史關係。若你過去追蹤的帳號後來<strong>遭官方封禁（Ban）、自行暫時停用或註銷</strong>，不同於手機 App 只會顯示即時活躍帳號，該筆記錄依然會存在於下載檔中，因此人數通常會略高於手機 App。</p>
+        </div>
+        <div class="sidebar-note-item">
+          <h5>2. 如何快速辨識停用或遭封禁帳號？</h5>
+          <p>若點擊帳號跳轉至 Instagram 顯示「<strong>很抱歉，此頁面無法使用</strong>」，表示該帳號目前處於<strong>暫時停用、遭封禁或已移除</strong>狀態。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tutorial Image Lightbox Modal (點擊放大預覽) -->
+  <div class="modal-overlay image-lightbox-overlay" id="lightbox-modal">
+    <div class="lightbox-container">
+      <img id="lightbox-img" src="" alt="放大預覽">
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
+
+
+  <script src="js/state.js"></script>
+  <script src="js/chart.js"></script>
+  <script src="js/parser.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/triage.js"></script>
+</body>
+</html>
