@@ -443,7 +443,7 @@ function renderTriagePage(pageId) {
   const rawList = getTriageRawList(pageId);
 
   if (!state.isDataLoaded) {
-    if (emptyStateEl) emptyStateEl.style.display = 'block';
+    if (emptyStateEl) emptyStateEl.style.display = 'flex';
     if (containerEl) containerEl.style.display = 'none';
     return;
   }
