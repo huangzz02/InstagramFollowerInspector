@@ -406,7 +406,7 @@ function resetTriageData() {
 
     const emptyStateEl = document.getElementById(`triage-empty-${pageId}`);
     const containerEl = document.getElementById(`triage-container-${pageId}`);
-    if (emptyStateEl) emptyStateEl.style.display = 'block';
+    if (emptyStateEl) emptyStateEl.style.display = 'flex';
     if (containerEl) containerEl.style.display = 'none';
   });
 }
