@@ -411,11 +411,11 @@
   color: #f43f5e;
 }
 
-/* Batch Action Bar - Floating Bottom Pill Dock (Zero layout shift, 100% 不再推擠跳動) */
+/* Batch Action Bar - Floating Bottom Pill Dock (置中於右側內容區) */
 .triage-batch-bar {
   position: fixed;
   bottom: 3.7rem;
-  left: 50%;
+  left: calc(50% + (var(--sidebar-width) / 2));
   transform: translateX(-50%) translateY(24px) scale(0.96);
   z-index: 1000;
   display: flex;
@@ -431,9 +431,10 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.28s cubic-bezier(0.34, 1.25, 0.64, 1);
+              transform 0.28s cubic-bezier(0.34, 1.25, 0.64, 1),
+              left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   flex-wrap: nowrap;
-  max-width: 90vw;
+  max-width: min(90vw, calc(100vw - var(--sidebar-width) - 2rem));
 }
 
 .triage-batch-bar.show {

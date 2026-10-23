@@ -33,7 +33,8 @@ const btnSidebarToggle = document.getElementById('btn-sidebar-toggle');
 const leftNav = document.getElementById('left-nav');
 if (btnSidebarToggle && leftNav) {
   btnSidebarToggle.addEventListener('click', () => {
-    leftNav.classList.toggle('collapsed');
+    const isCollapsed = leftNav.classList.toggle('collapsed');
+    document.body.classList.toggle('sidebar-collapsed', isCollapsed);
   });
 }
 

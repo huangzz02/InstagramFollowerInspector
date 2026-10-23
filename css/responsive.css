@@ -36,12 +36,20 @@
 }
 
 @media (max-width: 640px) {
+  :root,
+  body.sidebar-collapsed,
+  body:has(.left-nav.collapsed) {
+    --sidebar-width: 56px;
+  }
   .left-nav {
     width: 56px;
     padding: 0.85rem 0.5rem;
   }
   .left-nav-group-title {
-    display: none;
+    opacity: 0;
+    max-height: 0;
+    padding: 0;
+    pointer-events: none;
   }
   .left-nav-item span, .btn-sidebar-toggle span {
     opacity: 0;

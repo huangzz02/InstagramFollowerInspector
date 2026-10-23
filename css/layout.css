@@ -9,7 +9,7 @@
 
 /* Left Vertical Nav */
 .left-nav {
-  width: 172px;
+  width: var(--sidebar-width, 172px);
   flex-shrink: 0;
   background: rgba(21, 29, 48, 0.6);
   border-right: 1px solid var(--border-color);
@@ -19,7 +19,7 @@
   justify-content: space-between;
   height: 100%;
   box-sizing: border-box;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   overflow-x: hidden;
 }
 
@@ -44,8 +44,12 @@
   user-select: none;
   white-space: nowrap;
   overflow: hidden;
-  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-              max-height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 28px;
+  box-sizing: border-box;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .left-nav-bottom {
@@ -130,23 +134,24 @@
   max-width: 115px;
   transform: translateX(0);
   margin-left: 0.65rem;
-  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-              max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
-              margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              max-width 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              margin-left 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Left Nav Collapsed State - 56px: 8px padding + 40px button (12px pad + 16px svg + 12px pad) */
 .left-nav.collapsed {
-  width: 56px;
+  width: var(--sidebar-width, 56px);
   padding: 0.85rem 0.5rem;
 }
 
 .left-nav.collapsed .left-nav-group-title {
   opacity: 0;
   max-height: 0;
-  padding: 0;
-  margin: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  transform: translateY(-2px);
   pointer-events: none;
 }
 
