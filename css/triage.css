@@ -38,13 +38,7 @@
   overflow: hidden;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
-  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.triage-mini-card:hover {
-  border-color: rgba(148, 163, 184, 0.35);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+  cursor: default;
 }
 
 .triage-mini-card::before {
@@ -55,11 +49,6 @@
   right: 0;
   height: 2.5px;
   background: var(--card-accent, #38bdf8);
-  transition: height 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.triage-mini-card:hover::before {
-  height: 3.5px;
 }
 
 .triage-mini-header {

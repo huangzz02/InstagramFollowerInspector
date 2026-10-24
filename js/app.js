@@ -135,6 +135,8 @@ window.addEventListener('keydown', (e) => {
       closeLightbox();
     } else if (guideModal && guideModal.classList.contains('show')) {
       guideModal.classList.remove('show');
+    } else if (typeof closeCustomTagModal === 'function' && document.getElementById('custom-tag-modal')?.classList.contains('show')) {
+      closeCustomTagModal();
     } else {
       closeNoticeModal();
     }

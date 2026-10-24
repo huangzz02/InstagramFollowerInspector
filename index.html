@@ -386,13 +386,13 @@
             <div class="triage-filter-bar-wrap">
               <div class="custom-dropdown triage-mode-dropdown" data-triage="fans-not-followed">
                 <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-                  <span class="mode-dropdown-label">決策導向</span>
+                  <span class="mode-dropdown-label">自訂分類</span>
                   <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </button>
                 <div class="dropdown-menu">
-                  <div class="dropdown-item active" data-mode="decision"><span>決策導向</span></div>
-                  <div class="dropdown-item" data-mode="relation"><span>關係導向</span></div>
-                  <div class="dropdown-item" data-mode="custom"><span>自訂標籤</span></div>
+                  <div class="dropdown-item active" data-mode="custom"><span>自訂分類</span></div>
+                  <div class="dropdown-item" data-mode="decision"><span>用決策分類</span></div>
+                  <div class="dropdown-item" data-mode="relation"><span>用關係分類</span></div>
                 </div>
               </div>
               <div class="triage-filter-bar" id="triage-filter-bar-fans-not-followed"></div>
@@ -486,13 +486,13 @@
             <div class="triage-filter-bar-wrap">
               <div class="custom-dropdown triage-mode-dropdown" data-triage="mutuals">
                 <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-                  <span class="mode-dropdown-label">決策導向</span>
+                  <span class="mode-dropdown-label">自訂分類</span>
                   <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </button>
                 <div class="dropdown-menu">
-                  <div class="dropdown-item active" data-mode="decision"><span>決策導向</span></div>
-                  <div class="dropdown-item" data-mode="relation"><span>關係導向</span></div>
-                  <div class="dropdown-item" data-mode="custom"><span>自訂標籤</span></div>
+                  <div class="dropdown-item active" data-mode="custom"><span>自訂分類</span></div>
+                  <div class="dropdown-item" data-mode="decision"><span>用決策分類</span></div>
+                  <div class="dropdown-item" data-mode="relation"><span>用關係分類</span></div>
                 </div>
               </div>
               <div class="triage-filter-bar" id="triage-filter-bar-mutuals"></div>
@@ -589,13 +589,13 @@
             <div class="triage-filter-bar-wrap">
               <div class="custom-dropdown triage-mode-dropdown" data-triage="not-following-back">
                 <button type="button" class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-                  <span class="mode-dropdown-label">決策導向</span>
+                  <span class="mode-dropdown-label">自訂分類</span>
                   <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                 </button>
                 <div class="dropdown-menu">
-                  <div class="dropdown-item active" data-mode="decision"><span>決策導向</span></div>
-                  <div class="dropdown-item" data-mode="relation"><span>關係導向</span></div>
-                  <div class="dropdown-item" data-mode="custom"><span>自訂標籤</span></div>
+                  <div class="dropdown-item active" data-mode="custom"><span>自訂分類</span></div>
+                  <div class="dropdown-item" data-mode="decision"><span>用決策分類</span></div>
+                  <div class="dropdown-item" data-mode="relation"><span>用關係分類</span></div>
                 </div>
               </div>
               <div class="triage-filter-bar" id="triage-filter-bar-not-following-back"></div>
@@ -791,6 +791,38 @@
     </div>
   </div>
 
+  <!-- Custom Tag Creation Modal -->
+  <div class="modal-overlay" id="custom-tag-modal">
+    <div class="modal-content custom-tag-modal-content">
+      <div class="modal-header">
+        <div class="notice-modal-title">
+          <svg class="help-q-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+            <line x1="7" y1="7" x2="7.01" y2="7"/>
+          </svg>
+          <span>新增自訂標籤</span>
+        </div>
+        <button type="button" class="btn-close" id="btn-close-custom-tag" aria-label="關閉">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="custom-tag-modal-body">
+        <div class="form-group">
+          <label for="custom-tag-name-input">標籤名稱</label>
+          <input type="text" id="custom-tag-name-input" class="tag-input-field" placeholder="例如：同學、摯友..." maxlength="20" autocomplete="off">
+          <span class="tag-input-hint" id="custom-tag-error-msg"></span>
+        </div>
+        <div class="form-group">
+          <label>標籤色彩</label>
+          <div class="tag-color-palette" id="custom-tag-color-palette"></div>
+        </div>
+      </div>
+      <div class="custom-tag-modal-footer">
+        <button type="button" class="btn-modal-cancel" id="btn-cancel-custom-tag">取消</button>
+        <button type="button" class="btn-modal-confirm" id="btn-confirm-custom-tag">建立標籤</button>
+      </div>
+    </div>
+  </div>
 
   <script src="js/state.js"></script>
   <script src="js/chart.js"></script>

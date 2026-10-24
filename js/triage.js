@@ -34,7 +34,7 @@ const inMemoryCustomTags = {
   'not-following-back': []
 };
 
-function getTriageTag(username, mode = 'decision', pageId = null) {
+function getTriageTag(username, mode = 'custom', pageId = null) {
   if (!username) return null;
   const key = String(username).toLowerCase();
 
@@ -62,7 +62,7 @@ function getTriageTag(username, mode = 'decision', pageId = null) {
   return null;
 }
 
-function setTriageTag(username, tagId, mode = 'decision', pageId = null, skipSave = false) {
+function setTriageTag(username, tagId, mode = 'custom', pageId = null, skipSave = false) {
   if (!username) return;
   const key = String(username).toLowerCase();
 
@@ -341,8 +341,7 @@ const TRIAGE_MODES = {
       { id: 'friend_close', label: '朋友全熟', color: '#10b981', bg: 'rgba(16, 185, 129, 0.12)', border: 'rgba(16, 185, 129, 0.35)' },
       { id: 'friend_mid', label: '朋友半熟', color: '#38bdf8', bg: 'rgba(56, 189, 248, 0.12)', border: 'rgba(56, 189, 248, 0.35)' },
       { id: 'friend_distant', label: '朋友不熟', color: '#94a3b8', bg: 'rgba(148, 163, 184, 0.12)', border: 'rgba(148, 163, 184, 0.35)' },
-      { id: 'passerby', label: '路人', color: '#64748b', bg: 'rgba(100, 116, 139, 0.12)', border: 'rgba(100, 116, 139, 0.35)' },
-      { id: 'spam', label: '假帳號', color: '#f43f5e', bg: 'rgba(244, 63, 94, 0.12)', border: 'rgba(244, 63, 94, 0.35)' }
+      { id: 'passerby', label: '路人', color: '#64748b', bg: 'rgba(100, 116, 139, 0.12)', border: 'rgba(100, 116, 139, 0.35)' }
     ],
     'mutuals': [
       { id: 'friend_close', label: '朋友全熟', color: '#10b981', bg: 'rgba(16, 185, 129, 0.12)', border: 'rgba(16, 185, 129, 0.35)' },
@@ -366,7 +365,7 @@ const TRIAGE_PAGE_CONFIG = {
 
 function createTriagePageState() {
   return {
-    tagMode: 'decision',
+    tagMode: 'custom',
     viewMode: 'single',
     filterTag: 'uncategorized',
     sortMode: 'recent',
@@ -420,7 +419,7 @@ function showTriageToast(message) {
 
 // Get active tag list for a page based on its current tagMode
 function getActiveTags(pageId) {
-  const mode = triageState[pageId].tagMode || 'decision';
+  const mode = triageState[pageId].tagMode || 'custom';
   if (mode === 'decision') {
     return TRIAGE_MODES.decision[pageId] || [];
   }
@@ -512,7 +511,7 @@ function applyBatchTag(pageId, tagId) {
   if (!s.selectedUsernames || s.selectedUsernames.size === 0) return;
 
   const count = s.selectedUsernames.size;
-  const mode = s.tagMode || 'decision';
+  const mode = s.tagMode || 'custom';
 
   s.selectedUsernames.forEach(username => {
     setTriageTag(username, tagId, mode, pageId, true);
@@ -537,7 +536,7 @@ function clearBatchTag(pageId) {
   if (!s.selectedUsernames || s.selectedUsernames.size === 0) return;
 
   const count = s.selectedUsernames.size;
-  const mode = s.tagMode || 'decision';
+  const mode = s.tagMode || 'custom';
 
   s.selectedUsernames.forEach(username => {
     setTriageTag(username, null, mode, pageId, true);
@@ -602,7 +601,7 @@ function renderTriageFilterBar(pageId) {
   if (!bar) return;
 
   const s = triageState[pageId];
-  const mode = s.tagMode || 'decision';
+  const mode = s.tagMode || 'custom';
   const activeTags = getActiveTags(pageId);
   const rawList = getTriageRawList(pageId);
 
@@ -718,27 +717,134 @@ function renderTriageFilterBar(pageId) {
   const addBtn = document.getElementById(`btn-add-tag-${pageId}`);
   if (addBtn) {
     addBtn.addEventListener('click', () => {
-      const name = window.prompt('請輸入新標籤名稱：');
-      if (name && name.trim()) {
-        const cleanName = name.trim();
-        const colors = ['#38bdf8', '#a855f7', '#f59e0b', '#10b981', '#f43f5e'];
-        const existing = inMemoryCustomTags[pageId];
-        const nextColor = colors[existing.length % colors.length];
-        const newId = 'custom_' + Date.now();
-        existing.push({
-          id: newId,
-          label: cleanName,
-          color: nextColor,
-          bg: 'rgba(255, 255, 255, 0.08)',
-          border: 'rgba(255, 255, 255, 0.25)'
-        });
-        saveActiveProfileToStorage();
-        renderTriageFilterBar(pageId);
-        updateBatchBar(pageId);
-      }
+      openCustomTagModal(pageId);
     });
   }
 }
+
+// ===== Custom Tag In-App Creation Modal (取代原生 window.prompt) =====
+let customTagTargetPageId = null;
+let customTagSelectedColor = '#38bdf8';
+const CUSTOM_TAG_PRESET_COLORS = [
+  '#38bdf8', // 天藍
+  '#a855f7', // 紫羅蘭
+  '#f59e0b', // 暖琥珀
+  '#10b981', // 翡翠綠
+  '#f43f5e', // 薔薇粉紅
+  '#06b6d4', // 青藍
+  '#eab308', // 亮金黃
+  '#ec4899'  // 魅惑桃紅
+];
+
+function openCustomTagModal(pageId) {
+  customTagTargetPageId = pageId;
+  const modal = document.getElementById('custom-tag-modal');
+  const input = document.getElementById('custom-tag-name-input');
+  const errorMsg = document.getElementById('custom-tag-error-msg');
+  const palette = document.getElementById('custom-tag-color-palette');
+  if (!modal || !input) return;
+
+  if (errorMsg) errorMsg.textContent = '';
+  input.value = '';
+
+  const existing = inMemoryCustomTags[pageId] || [];
+  customTagSelectedColor = CUSTOM_TAG_PRESET_COLORS[existing.length % CUSTOM_TAG_PRESET_COLORS.length];
+
+  if (palette) {
+    palette.innerHTML = CUSTOM_TAG_PRESET_COLORS.map(c => `
+      <button type="button" class="color-chip ${c === customTagSelectedColor ? 'active' : ''}" style="--chip-color: ${c};" data-color="${c}" aria-label="選擇顏色 ${c}"></button>
+    `).join('');
+
+    palette.querySelectorAll('.color-chip').forEach(chip => {
+      chip.addEventListener('click', (e) => {
+        e.preventDefault();
+        customTagSelectedColor = chip.getAttribute('data-color');
+        palette.querySelectorAll('.color-chip').forEach(ch => ch.classList.toggle('active', ch === chip));
+      });
+    });
+  }
+
+  modal.classList.add('show');
+  setTimeout(() => input.focus(), 60);
+}
+
+function closeCustomTagModal() {
+  const modal = document.getElementById('custom-tag-modal');
+  if (modal) modal.classList.remove('show');
+  customTagTargetPageId = null;
+}
+window.closeCustomTagModal = closeCustomTagModal;
+
+function submitCustomTag() {
+  if (!customTagTargetPageId) return;
+  const pageId = customTagTargetPageId;
+  const input = document.getElementById('custom-tag-name-input');
+  const errorMsg = document.getElementById('custom-tag-error-msg');
+  const rawName = input ? input.value : '';
+  const cleanName = rawName.trim();
+
+  if (!cleanName) {
+    if (errorMsg) errorMsg.textContent = '請輸入標籤名稱';
+    if (input) input.focus();
+    return;
+  }
+
+  const existing = inMemoryCustomTags[pageId] || [];
+  if (existing.some(t => t.label.toLowerCase() === cleanName.toLowerCase())) {
+    if (errorMsg) errorMsg.textContent = '已有相同名稱的自訂標籤';
+    if (input) input.focus();
+    return;
+  }
+
+  const newId = 'custom_' + Date.now();
+  existing.push({
+    id: newId,
+    label: cleanName,
+    color: customTagSelectedColor,
+    bg: 'rgba(255, 255, 255, 0.08)',
+    border: 'rgba(255, 255, 255, 0.25)'
+  });
+  inMemoryCustomTags[pageId] = existing;
+
+  saveActiveProfileToStorage();
+  renderTriageFilterBar(pageId);
+  updateBatchBar(pageId);
+  closeCustomTagModal();
+  showTriageToast(`已新增「${cleanName}」標籤`);
+}
+
+// Bind custom tag modal event listeners once
+(function initCustomTagModal() {
+  const modal = document.getElementById('custom-tag-modal');
+  const btnClose = document.getElementById('btn-close-custom-tag');
+  const btnCancel = document.getElementById('btn-cancel-custom-tag');
+  const btnConfirm = document.getElementById('btn-confirm-custom-tag');
+  const input = document.getElementById('custom-tag-name-input');
+
+  if (btnClose) btnClose.addEventListener('click', closeCustomTagModal);
+  if (btnCancel) btnCancel.addEventListener('click', closeCustomTagModal);
+  if (btnConfirm) btnConfirm.addEventListener('click', submitCustomTag);
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeCustomTagModal();
+    });
+  }
+  if (input) {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        submitCustomTag();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        closeCustomTagModal();
+      }
+    });
+    input.addEventListener('input', () => {
+      const errorMsg = document.getElementById('custom-tag-error-msg');
+      if (errorMsg && errorMsg.textContent) errorMsg.textContent = '';
+    });
+  }
+})();
 
 // Update Sort dropdown display label and active status
 function updateSortDropdownUI(pageId) {
@@ -769,16 +875,16 @@ function updateModeDropdownUI(pageId) {
   const dropdown = document.querySelector(`.triage-mode-dropdown[data-triage="${pageId}"]`);
   if (!dropdown) return;
 
-  const currentMode = s.tagMode || 'decision';
+  const currentMode = s.tagMode || 'custom';
   const modeNames = {
-    'decision': '決策導向',
-    'relation': '關係導向',
-    'custom': '自訂標籤'
+    'custom': '自訂分類',
+    'decision': '用決策分類',
+    'relation': '用關係分類'
   };
 
   const labelEl = dropdown.querySelector('.mode-dropdown-label');
   if (labelEl) {
-    labelEl.textContent = modeNames[currentMode] || '決策導向';
+    labelEl.textContent = modeNames[currentMode] || '自訂分類';
   }
 
   dropdown.querySelectorAll('.dropdown-item').forEach(item => {
@@ -790,7 +896,7 @@ function updateModeDropdownUI(pageId) {
 // Filter and render list
 function filterAndRenderTriageList(pageId) {
   const s = triageState[pageId];
-  const mode = s.tagMode || 'decision';
+  const mode = s.tagMode || 'custom';
   const rawList = getTriageRawList(pageId);
   const query = (s.searchQuery || '').trim().toLowerCase();
 
@@ -845,7 +951,7 @@ function filterAndRenderTriageList(pageId) {
 // Render next chunk of users
 function renderTriageChunk(pageId, isInitial = false) {
   const s = triageState[pageId];
-  const mode = s.tagMode || 'decision';
+  const mode = s.tagMode || 'custom';
   const grid = document.getElementById(`triage-grid-${pageId}`);
   if (!grid || !s.currentList) return;
 
@@ -982,7 +1088,7 @@ document.addEventListener('click', (e) => {
     const pagePanel = tagOption.closest('.page-panel');
     const pageId = pagePanel ? pagePanel.id.replace('page-', '') : null;
     const s = pageId ? triageState[pageId] : null;
-    const mode = s ? (s.tagMode || 'decision') : 'decision';
+    const mode = s ? (s.tagMode || 'custom') : 'custom';
 
     if (action === 'set-tag') {
       const tagId = tagOption.getAttribute('data-tag-id');
